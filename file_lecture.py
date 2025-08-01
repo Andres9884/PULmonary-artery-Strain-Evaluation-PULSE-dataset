@@ -2,50 +2,50 @@ import numpy as np
 import re
 import os
 
-# Función para separar los números de la línea
+# Function to separate numbers from the line
 def separar_numeros(linea, op):
-    # Utiliza una expresión regular para detectar números en notación científica
-    # La opción 1 es para filtrar las coordenadas del archivo .in sin simular
+    # Uses a regular expression to detect numbers in scientific notation
+    # Option 1 is to filter the coordinates of the .in file without simulation
     if op == 1:
         numeros = re.findall(r'[+-]?\d+\.\d+E[+-]?\d+', linea)
         return [float(num) for num in numeros]
-    # La opción 2 es para filtrar las coordenadas del archivo después de simular
+    # Option 2 is to filter the coordinates of the file after simulation
     elif op == 2:
         numeros = re.findall(r'[+-]?\d+\.\d+E?[+-]?\d+', linea)
 
         return [float(num) for num in numeros][:3]
 
-# Función que extrae las coordenadas de los archivos .in
+# Function that extracts coordinates from .in files
 def get_coordinates(path):
-    # Se abre el archivo .txt
+    # Open the .txt file
     with open(path, 'r') as IN_line:
         raw_coordinates = IN_line.readlines()
     keyIndex = 0
-    # Todos los IN tienen en común que la lista de nodos inicia en la coordenada 13
+    # All IN files have in common that the list of nodes starts at coordinate 13
     raw_coordinates = raw_coordinates[12:]
     cen = True
     i = 0
-    # Se recorre el .txt hasta encontrar el texto N ,R5.3,LOC,     -1 que está después de las cooordenadas
+    # Iterate through the .txt until the text N ,R5.3,LOC,     -1 is found, which is after the coordinates
     while cen:
         if 'N ,R5.3,LOC,     -1' in raw_coordinates[i]:
             keyIndex = i
             cen = False
         i += 1
-    # Se indexan las coordenadas con el índice que devuelva el recorrido
+    # Index the coordinates with the index found during the iteration
     raw_coordinates = raw_coordinates[:keyIndex]
     return raw_coordinates
 
-# Función que extrae las coordenadas de los archivos de simulación
+# Function that extracts coordinates from simulation files
 def get_sim_coordinates(path):
-    # Se abre archivo y se extrae toda la info
+    # Open the file and extract all the information
     with open(path, 'r') as sim_file:
         raw_coordinates = sim_file.readlines()
-    # Tienen en común los .txt de las simulaciones que las coorrdenadas empiezan en la linea 11 entonces se index
+    # Simulation .txt files have in common that the coordinates start at line 11, so they are indexed
     raw_coordinates = raw_coordinates[11:]
     cen = True
     i = 0
     keyIndex = []
-    # Se obtienen los indices de lista de la información que no nos interesa
+    # Get the list indices of the information we are not interested in
     for i in range(len(raw_coordinates)):
         if 'PRINT U    NODAL SOLUTION PER NODE' in raw_coordinates[i]:
             keyIndex.append(i)
@@ -69,24 +69,24 @@ def get_sim_coordinates(path):
             keyIndex.append(i)
     
     keyIndex = np.array(keyIndex)
-    # Se recorren los indices y se usa pop() para eliminar la info que no interesa y se disminuye el indice en 1 porque las coordenadas
-    # pierden tamaño en magnitud de 1
+    # Iterate through the indices and use pop() to remove the information we are not interested in,
+    # and decrease the index by 1 because the coordinates shrink in size by 1
     for j in keyIndex:
         raw_coordinates.pop(j)
         keyIndex -= 1
     
-    # Se indexan las ultimas 5 posiciones ya que no nos interesan y estan son comúnes en los .txt de simulación
+    # Index the last 3 positions since we are not interested in them and they are common in the simulation .txt files
     raw_coordinates = raw_coordinates[:-3]
     return raw_coordinates
     
-# Función que organiza las coordenadas en tripletes de 3 con su notación científica
+# Function that organizes the coordinates into triplets of 3 with their scientific notation
 def find_numbers(raw_coordinates, op):
     lst = []
-    # Se recorren todas las lineas de las coordenadas y se convierte la notación científica
+    # Iterate through all the coordinate lines and convert the scientific notation
     for coordinate in raw_coordinates:
         trip = separar_numeros(coordinate, op)
         if trip != []:
             lst.append(trip)
-    # Se convierte la lista en array para poder plotear
+    # Convert the list to an array to be able to plot
 
     return np.array(lst)
