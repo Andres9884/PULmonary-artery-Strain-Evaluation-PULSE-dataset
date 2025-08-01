@@ -8,6 +8,6 @@ for %%f in ("%input_folder%\*.in") do (
     ren "%output_folder%\TRASH.rst" "%%~nf.rst"
     del /f /q "%output_folder%\*TRASH*"
     python E:\convergence_keeping.py %%~nf
-    echo Procesado exitoso: %%~nxf
+    echo Succesfull process: %%~nxf
 )
 
