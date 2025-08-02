@@ -7,7 +7,6 @@ for %%f in ("%input_folder%\*.in") do (
     "%mapdl_path%" -i "%%f" -o "E:\test.out" -b nolist -j "TRASH" -dir "%output_folder%" :: Create a .out file an replace its location
     ren "%output_folder%\TRASH.rst" "%%~nf.rst"
     del /f /q "%output_folder%\*TRASH*"
-    python E:\convergence_keeping.py %%~nf
     echo Succesfull process: %%~nxf
 )
 
