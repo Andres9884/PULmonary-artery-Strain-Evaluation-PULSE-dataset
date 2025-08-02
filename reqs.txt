@@ -1,0 +1,5 @@
+numpy
+tqdm
+re
+ansys-mapdl-core
+csv
