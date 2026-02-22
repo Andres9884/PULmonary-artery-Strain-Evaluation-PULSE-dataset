@@ -24,17 +24,16 @@ This repository presents two different alternatives, using Python, to obtain the
 </ol>
 
 ## Code usage Alternative 1
-
+This step, asumes you have <code>.in</code>, <code>.rst</code> and <code>.txt</code> corresponding to files yo want to work with and get 3D visualization.
 <ol style="font-family:Courier New; font-size:18px;">
-  <li>In <code>COMMAND.cmd</code>, change the commented lines with the paths you are going to use. Do the same with <code>DATA_CHANGE.py</code> (this file is intended to change files to specific <code>.in</code> parameters, and you can edit it to change these parameters), <code>PyAnsys.py</code>, and <code>get_coords.py</code>.</li>
-  <li>Run <code>COMMAND.cmd</code> by executing it as an application.</li>
+  <li>In <code>DATA_CHANGE.py</code> change the commented lines with the paths you are going to use (this file is intended to change files to specific <code>.in</code> parameters, and you can edit it to change these parameters). Do the same with <code>PyAnsys.py</code>, and <code>get_coords.py</code>.</li>
   <li>Run <code>PyAnsys.py</code>. You will obtain two files per model: one not deformed and one deformed.</li>
   <li>Using <strong>Paraview</strong>, visualize the resulting <code>.vtk</code> files.</li>
 </ol>
 
 ## Code usage Alternative 2
 <p style="font-family:Courier New; font-size:18px;">
-  Follow steps 1 and 2. Since <code>get_coords.py</code> file is desigend to process one file at a time, you can simply implement an iterative code to obtain the result of the whole foler (if you have several <code>.in</code> files)
+  Follow step 1. Since <code>get_coords.py</code> file is desigend to process one file at a time, you can simply implement an iterative code to obtain the result of the whole foler (if you have several <code>.in</code> files)
 </p>
 <ol style="font-family:Courier New; font-size:18px;">
   <li>Run <code>get_coords.py</code>. You will obtain two files per model: one not deformed and one deformed but with <code>csv</code> format.</li>
